@@ -84,10 +84,10 @@ class PostResource extends Resource
                     ])
                     ->preserveFilenames()
                     ->getUploadedFileNameForStorageUsing(
-                        fn(TemporaryUploadedFile $file, \Filament\Forms\Get $get): string => 
-            $get('slug') . '.' . $file->getClientOriginalExtension()
-            // fn(TemporaryUploadedFile $file): string => (string) Str::slug($file->getClientOriginalName()) . $file->getClientOriginalExtension()
-    )
+                        fn(TemporaryUploadedFile $file, \Filament\Forms\Get $get): string =>
+                        $get('slug') . '.' . $file->getClientOriginalExtension()
+                        // fn(TemporaryUploadedFile $file): string => (string) Str::slug($file->getClientOriginalName()) . $file->getClientOriginalExtension()
+                    )
                     ->imageEditor()
                     ->required()
                     ->directory('posts'),
@@ -112,10 +112,10 @@ class PostResource extends Resource
             ->defaultGroup('active')
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                ->limit(25)
+                    ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
-                ->limit(25)
+                    ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()
@@ -193,11 +193,11 @@ class PostResource extends Resource
                     // Action::make('Download')
                     //     ->url(fn(Post $record)=>route('post.pdf', $record))
                     //     ->openUrlInNewTab()
-                    Tables\Actions\Action::make('pdf') 
-                    ->label('PDF')
-                    ->color('success')
-                    ->url(fn (Post $record) => route('pdf', $record))
-                    ->openUrlInNewTab(), 
+                    Tables\Actions\Action::make('pdf')
+                        ->label('PDF')
+                        ->color('success')
+                        ->url(fn(Post $record) => route('pdf', $record))
+                        ->openUrlInNewTab(),
                 ])->tooltip('Actions')
             ])
             ->bulkActions([
@@ -218,31 +218,32 @@ class PostResource extends Resource
                 ]),
             ])
             ->headerActions([
-            BulkAction::make('Export')
-            ->deselectRecordsAfterCompletion()
-                ->action(function (Collection $records) {
-                // $posts=Post::get();
-                return response()->streamDownload(function() use ($records){
-$pdfContent=Blade::render('postsPDF', [
-    'records'=>$records
-]);
-echo Pdf::loadHTML($pdfContent)
-->setPaper('A4', 'potrait')
-->stream();
-                }, 'post.pdf');
-                })]);
-                    // Ambil data yang sudah difilter
-                    // $filteredData = Post::query()
-                    //     ->when(request()->has('published_from'), fn($query) => $query->whereDate('published_at', '>=', request('published_from')))
-                    //     ->when(request()->has('published_until'), fn($query) => $query->whereDate('published_at', '<=', request('published_until')))
-                    //     ->get();
+                BulkAction::make('Export')
+                    ->deselectRecordsAfterCompletion()
+                    ->action(function (Collection $records) {
+                        // $posts=Post::get();
+                        return response()->streamDownload(function () use ($records) {
+                            $pdfContent = Blade::render('postsPDF', [
+                                'records' => $records
+                            ]);
+                            echo Pdf::loadHTML($pdfContent)
+                                ->setPaper('A4', 'potrait')
+                                ->stream();
+                        }, 'post.pdf');
+                    })
+            ]);
+        // Ambil data yang sudah difilter
+        // $filteredData = Post::query()
+        //     ->when(request()->has('published_from'), fn($query) => $query->whereDate('published_at', '>=', request('published_from')))
+        //     ->when(request()->has('published_until'), fn($query) => $query->whereDate('published_at', '<=', request('published_until')))
+        //     ->get();
 
-                    // // Generate PDF menggunakan DomPDF
-                    // $pdf = Pdf::loadView('postsPDF', ['posts' => $filteredData]);
+        // // Generate PDF menggunakan DomPDF
+        // $pdf = Pdf::loadView('postsPDF', ['posts' => $filteredData]);
 
-                    // // Mengembalikan PDF sebagai stream (langsung ditampilkan di browser)
-                    // return $pdf->stream('posts.pdf');
-                
+        // // Mengembalikan PDF sebagai stream (langsung ditampilkan di browser)
+        // return $pdf->stream('posts.pdf');
+
     }
 
 
@@ -277,5 +278,5 @@ echo Pdf::loadHTML($pdfContent)
     //     })->get()->pluck('id');
     //     return parent::getEloquentQuery()->whereNotIn('id', $admin);
     // }
-    
+
 }

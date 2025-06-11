@@ -36,7 +36,7 @@
         'storage/logo tirta perwira.png')}}">
 
     </head>
-    <body class="">
+    <body class="font-poppins">
         <x-navbar2></x-navbar2>
 
             <!-- Page Content -->

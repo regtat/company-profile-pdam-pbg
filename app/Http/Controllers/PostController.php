@@ -21,7 +21,7 @@ class PostController extends Controller
         ->orderBy('published_at', 'desc')
         ->withCount('comments')
         ->latest()
-        ->paginate(1)
+        ->paginate(5)
         ;
         $artikelLain = Post::all();
 
@@ -64,7 +64,7 @@ public function showByCategory($slug)
 
     $categories = Category::all();
 
-    $artikel = Post::where('category_id', $category->id)->latest()->paginate(1);
+    $artikel = Post::where('category_id', $category->id)->latest()->paginate(5);
 
     $artikelLain = Post::all();
 
