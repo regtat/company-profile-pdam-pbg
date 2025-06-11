@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PostResource\Pages;
 
 use App\Filament\Resources\PostResource;
+use App\Filament\Resources\PostResource\Widgets\Comments;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -16,5 +17,9 @@ class EditPost extends EditRecord
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];
+    }
+    protected function getWidgets(): array{
+        return [Comments::class,
+    ];
     }
 }

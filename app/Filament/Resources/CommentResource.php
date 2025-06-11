@@ -17,7 +17,7 @@ class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     public static function form(Form $form): Form
     {
@@ -38,8 +38,20 @@ class CommentResource extends Resource
                 Forms\Components\TextInput::make('phone_number')
                     ->tel()
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('approve'),
+                    ->maxLength(13)
+                    ->minLength(12)
+                    ->placeholder('081234567891')
+                    ->rules(['regex:/^(08)[0-9]{10,11}$/']) // Contoh validasi regex untuk nomor telepon
+                    ->validationMessages([
+                        'regex' => 'Format nomor telepon tidak valid. Minimal 12 digit atau maksimal 13 digit',
+                    ]),
+                Forms\Components\Toggle::make('approved'),
+                // Forms\Components\TextInput::make('parent_id')
+                //     ->numeric(),
+                Forms\Components\Select::make('parent_id')
+                    ->label('Balasan untuk')
+                    ->relationship('replies', 'comment')
+                    ->nullable(),
             ]);
     }
 
@@ -56,8 +68,17 @@ class CommentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('approve')
+                Tables\Columns\IconColumn::make('approved')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('comment')
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('parent_id')
+                //     ->numeric()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('comments.parent_id.comment')
+                    ->label
+                    ('Komentar Induk')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -71,7 +92,6 @@ class CommentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -93,7 +113,6 @@ class CommentResource extends Resource
         return [
             'index' => Pages\ListComments::route('/'),
             'create' => Pages\CreateComment::route('/create'),
-            'view' => Pages\ViewComment::route('/{record}'),
             'edit' => Pages\EditComment::route('/{record}/edit'),
         ];
     }

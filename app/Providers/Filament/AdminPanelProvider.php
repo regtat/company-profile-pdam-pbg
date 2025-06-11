@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Resources\CategoryResource\Widgets\StatsOverview;
+use App\Filament\Resources\PostResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandName('PDAM Purbalingga')
             ->id('admin')
             ->path('admin')
             ->login()
@@ -45,6 +48,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                StatsOverview::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -63,7 +67,9 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ])
+            
             ->profile(isSimple:false)
-            ->registration();
+            // ->registration()
+            ;
     }
 }

@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('tarif_dasars', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
-            $table->text('comment');
-            $table->string('name');
-            $table->string('email')->nullable();
-            $table->string('phone_number');
-            $table->boolean('approve')->nullable()->default(true);
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('tarif_dasars');
     }
 };

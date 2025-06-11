@@ -9,13 +9,14 @@ export default {
         './resources/**/*.js',
         './resources/**/*.vue',
     ],
+    
     theme: {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 poppins: ['Poppins', 'sans-serif'],
                 teachers: ['Teachers', 'sans-serif'],
-                poly: ['Poly']
+                raleway: ['Raleway', 'sans-serif']
             },
         },
     },

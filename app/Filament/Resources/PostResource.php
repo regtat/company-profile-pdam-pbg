@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
+use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
+use App\Filament\Resources\PostResource\Widgets\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
@@ -25,10 +28,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use App\Filament\Exports\PostExporter;
-use Filament\Actions\Exports\Enums\ExportFormat;
-use Filament\Actions\Exports\Models\Export;
-use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Facades\Blade;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PostResource extends Resource
 {
@@ -59,7 +62,7 @@ class PostResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('body')
+                Forms\Components\Textarea::make('body')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('published_at')
@@ -70,11 +73,24 @@ class PostResource extends Resource
                 Forms\Components\Select::make('category_id')
                     // ->searchable()
                     ->preload()
+                    ->searchable()
                     ->relationship('category', 'name')
                     ->required(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->required(),
+                    ->maxSize(102400)
+                    ->rules([
+                        'mimes:jpeg,png,jpg',
+                    ])
+                    ->preserveFilenames()
+                    ->getUploadedFileNameForStorageUsing(
+                        fn(TemporaryUploadedFile $file, \Filament\Forms\Get $get): string => 
+            $get('slug') . '.' . $file->getClientOriginalExtension()
+            // fn(TemporaryUploadedFile $file): string => (string) Str::slug($file->getClientOriginalName()) . $file->getClientOriginalExtension()
+    )
+                    ->imageEditor()
+                    ->required()
+                    ->directory('posts'),
                 Forms\Components\Toggle::make('active')
                     ->default(false)
                 // ->visible(fn () => Auth::user()->roles==='Admin' )
@@ -96,8 +112,10 @@ class PostResource extends Resource
             ->defaultGroup('active')
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()
@@ -152,24 +170,34 @@ class PostResource extends Resource
                         if ($data['published_until']) {
                             return 'Published until ' . $publishedUntil;
                         }
-
                         return null;
-
-
                     }),
                 SelectFilter::make('category_id')
                     ->label('Category')
                     ->relationship('category', 'name')
                     ->searchable()
                     ->preload(),
+                SelectFilter::make('user_id')
+                    ->label('Author')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make()
                         ->visible(fn($record) => $record->user_id === Auth::id()),
                     Tables\Actions\DeleteAction::make()
-                        ->visible(fn($record) => $record->user_id === Auth::id())
+                        ->visible(fn($record) => $record->user_id === Auth::id()),
+                    // Action::make('Download')
+                    //     ->url(fn(Post $record)=>route('post.pdf', $record))
+                    //     ->openUrlInNewTab()
+                    Tables\Actions\Action::make('pdf') 
+                    ->label('PDF')
+                    ->color('success')
+                    ->url(fn (Post $record) => route('pdf', $record))
+                    ->openUrlInNewTab(), 
                 ])->tooltip('Actions')
             ])
             ->bulkActions([
@@ -183,18 +211,45 @@ class PostResource extends Resource
                             $records->each(function (Post $post) {
                                 // Toggle nilai 'active'
                                 $post->update([
-                                    'active' => !$post->active, // toggle between true and false
+                                    'active' => !$post->active  // toggle between true and false
                                 ]);
                             });
                         }),
                 ]),
-            ]);
+            ])
+            ->headerActions([
+            BulkAction::make('Export')
+            ->deselectRecordsAfterCompletion()
+                ->action(function (Collection $records) {
+                // $posts=Post::get();
+                return response()->streamDownload(function() use ($records){
+$pdfContent=Blade::render('postsPDF', [
+    'records'=>$records
+]);
+echo Pdf::loadHTML($pdfContent)
+->setPaper('A4', 'potrait')
+->stream();
+                }, 'post.pdf');
+                })]);
+                    // Ambil data yang sudah difilter
+                    // $filteredData = Post::query()
+                    //     ->when(request()->has('published_from'), fn($query) => $query->whereDate('published_at', '>=', request('published_from')))
+                    //     ->when(request()->has('published_until'), fn($query) => $query->whereDate('published_at', '<=', request('published_until')))
+                    //     ->get();
+
+                    // // Generate PDF menggunakan DomPDF
+                    // $pdf = Pdf::loadView('postsPDF', ['posts' => $filteredData]);
+
+                    // // Mengembalikan PDF sebagai stream (langsung ditampilkan di browser)
+                    // return $pdf->stream('posts.pdf');
+                
     }
+
 
     public static function getRelations(): array
     {
         return [
-            //
+            CommentsRelationManager::class
         ];
     }
 
@@ -222,4 +277,5 @@ class PostResource extends Resource
     //     })->get()->pluck('id');
     //     return parent::getEloquentQuery()->whereNotIn('id', $admin);
     // }
+    
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CommentResource\Pages;
+namespace App\Filament\Resources\OfficeResource\Pages;
 
-use App\Filament\Resources\CommentResource;
+use App\Filament\Resources\OfficeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewComment extends ViewRecord
+class ViewOffice extends ViewRecord
 {
-    protected static string $resource = CommentResource::class;
+    protected static string $resource = OfficeResource::class;
 
     protected function getHeaderActions(): array
     {

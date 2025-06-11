@@ -26,7 +26,8 @@ class BannerResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->required(),
+                    ->required()
+                    ->directory('banners'),
                     Forms\Components\Toggle::make('active')
                     ->default(false)
             ]);
