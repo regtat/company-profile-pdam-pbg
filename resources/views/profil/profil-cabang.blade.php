@@ -139,7 +139,7 @@
       @endphp
             @foreach ($cabang as $item)
             @if($item->office->isNotEmpty())
-            <div class="block card cabang pdam w-5/6 p-7 text-white mb-4">
+            <div class="block card cabang pdam w-5/6 p-7 text-white mb-8">
             <ul>
             <li class="uppercase mb-2"><b>{{$no++}}. CABANG {{$item->name}}</b></li>
             <li class="mb-5 ml-4">Kepala Cabang : {{$item->branch_manager}}</li>

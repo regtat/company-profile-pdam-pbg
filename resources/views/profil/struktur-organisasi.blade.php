@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="col-span-2 ml-4">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col mb-8">
                         <div class="title-visi mb-3">Struktur Organisasi</div>
                         <div class="flex flex-row items-center mb-4">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"

@@ -94,7 +94,7 @@
               <p class="ml-3 detail-date">pdam_purbalingga@outlook.com</p>
             </div>
             <img class="my-5" src={{ asset('storage/background/bg-depan.jpg') }}>
-            <div style="font-size: 14px;">
+            <div style="font-size: 14px;" class="mb-8">
               <p>Penyediaan air minum bagi Kabupaten Purbalingga dimulai sejak tahun 1927 dan pada mulanya hanya untuk
                 melayani kebutuhan air minum Pabrik Gula dan rumah/kantor Asisten Residen.</p><br />
               <p>Sumber penyediaan air minum berasal dari sumber mata air di Kawung Carang yang terletak di daerah
