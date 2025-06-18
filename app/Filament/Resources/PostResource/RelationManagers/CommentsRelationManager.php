@@ -29,7 +29,7 @@ class CommentsRelationManager extends RelationManager
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone_number')
                     ->tel()
-                    ->required()
+                    ->nullable()
                     ->maxLength(13)
                     ->minLength(12)
                     ->placeholder('081234567891')
@@ -42,7 +42,7 @@ class CommentsRelationManager extends RelationManager
                 //     ->numeric(),
                 Forms\Components\Select::make('parent_id')
                     ->label('Balasan untuk')
-                    ->relationship('replies', 'comment')
+                    ->relationship('parent', 'comment')
                     ->nullable()
                     ->searchable()
                     ->preload(),

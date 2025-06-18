@@ -8,11 +8,11 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
-    protected function getStats(): array
-    {
-        $activePosts=Post::where('active', '=','1')->count();
-        return [
-            Stat::make('Active', $activePosts)->color('success'),
-        ];
-    }
+    // protected function getStats(): array
+    // {
+    //     $activePosts=Post::where('active', '=','1')->count();
+    //     return [
+    //         Stat::make('Active', $activePosts)->color('success'),
+    //     ];
+    // }
 }

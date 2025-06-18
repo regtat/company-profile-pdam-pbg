@@ -48,10 +48,14 @@ class Post extends Model
         });
     }
     public function shortBody(){
+        return Str::words($this->body, '30');
+    }
+    public function shortBodyFirst(){
         return Str::words($this->body, '15');
     }
     public function shortTitle(){
-        return strtoupper(Str::words($this->title, '10'));
+        // return strtoupper(Str::words($this->title, '10'));
+        return Str::words($this->title, '10');
     }
     public function shortTitle2(){
         return Str::words($this->title, '10');

@@ -27,6 +27,13 @@ Route::get('/post/{id}', [HomeController::class, 'show']);
 Route::get('/search', [SearchController::class, 'search'])->name('search'); 
 // dipake
 
+Route::get('/unauthorized', function () {
+    return view('unauthorized');
+})->name('unauthorized');
+Route::get('/post-unavailable', function () {
+    return view('post-unavailable');
+})->name('post-unavailable');
+
 
 
 // Route::get('/search', function () {

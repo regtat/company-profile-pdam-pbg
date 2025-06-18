@@ -28,7 +28,7 @@
     </button>
 </div> -->
 
-    <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <div id="default-carousel" class="relative w-full mb-5" data-carousel="slide">
         <!-- Carousel wrapper -->
         <div class="relative h-[696px] overflow-hidden">
             @foreach($banners as $index => $banner)
@@ -78,8 +78,6 @@
         </button>
     </div>
 
-
-
     <!-- <img class="flex align-items-center" src="{{asset('image/Selamat-datang.jpg')}}"
         style="display: block; margin-left: auto; margin-right: auto;"> -->
 
@@ -87,7 +85,7 @@
     <div class="px-4 py-4">
         <div class="columns-1 md:columns-2 sm:columns-1 py-2">
             @foreach ($posts as $post)
-                <div class="mx-auto max-w-lg overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl mb-8">
+                <div class="mx-auto max-w-lg overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl mb-12">
                     <div class="flex-row">
                         <div class="md:shrink-0 w-full">
                             <img class="rounded-t-lg h-[300px] object-cover w-full"
@@ -98,9 +96,9 @@
                                 class="block text-lg leading-tight font-bold text-black hover:underline">
                                 {{$post->title}}
                             </a>
-                            <p class="mb-3 mt-2 font-normal text-gray-700 dark:text-gray-400">{!! $post->shortBody() !!}</p>
+                            <p class="mb-3 mt-2 font-normal text-gray-700 dark:text-gray-400">{!! $post->shortBodyFirst() !!}</p>
                             <a href="/post/{{$post['id']}}"
-                                class="flex justify-center w-1/2 md:w-1 inline-block bg-[#00284E] rounded-md text-white text-center py-1 ">Selengkapnya...</a>
+                                class="flex justify-center w-1/2 md:w-1 inline-block bg-[#00284E] rounded-md text-white text-center py-1 ">Selengkapnya</a>
                         </div>
                     </div>
                 </div>

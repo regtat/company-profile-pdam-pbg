@@ -17,17 +17,17 @@
             <ul>
               <li class="font-bold text-2xl text-black mb-4">Kategori</li>
               @foreach ($categories as $cat)
-          <a href="{{ route('berita.kategori', $cat->slug) }}">
-          <li class="list-profil flex flex-row items-center mb-2
+            <a href="{{ route('berita.kategori', $cat->slug) }}">
+            <li class="list-profil flex flex-row items-center mb-2
           {{ request()->is('berita/kategori/' . $cat->slug) ? 'font-semibold text-blue-600' : '' }}">
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M7.157 7.71114L1.5 13.3681L0.0859985 11.9541L5.036 7.00414L0.0859985 2.05414L1.5 0.640137L7.157 6.29714C7.34447 6.48466 7.44978 6.73897 7.44978 7.00414C7.44978 7.2693 7.34447 7.52361 7.157 7.71114Z"
-              fill="#6E6A6A" />
-            </svg>
-            <span class="pl-2">{{$cat->name}}</span>
-          </li>
-          </a>
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M7.157 7.71114L1.5 13.3681L0.0859985 11.9541L5.036 7.00414L0.0859985 2.05414L1.5 0.640137L7.157 6.29714C7.34447 6.48466 7.44978 6.73897 7.44978 7.00414C7.44978 7.2693 7.34447 7.52361 7.157 7.71114Z"
+                fill="#6E6A6A" />
+              </svg>
+              <span class="pl-2">{{$cat->name}}</span>
+            </li>
+            </a>
         @endforeach
               <li class="list-profil flex flex-row items-center mb-2">
                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,14 +58,15 @@
           </div>
         </div>
         <div class="col-span-2 ml-4">
+          @if ($posts != null)
           @foreach ($posts as $post)
         <a href="/post/{{$post->id}}">
-        <div class="flex flex-row gap-x-4 mb-8">
-          <div class="w-1/2">
-          <img class="h-48 w-full object-cover rounded-md" src="{{asset('storage/' . $post->image)}}"
+        <div class="flex flex-row mb-8">
+          <div class="w-2/5">
+          <img class="h-56 w-full object-cover rounded-md" src="{{asset('storage/' . $post->image)}}"
             alt="Post image">
           </div>
-          <div class="w-1/2 flex flex-col">
+          <div class="ml-6 w-3/5 flex flex-col">
           <div class="all-posts-title">{{ $post->shortTitle2() }}</div>
           <div class="flex flex-row items-center">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,58 +82,62 @@
               d="M8 0C5.8 0 4 2.24 4 5C4 7.76 5.8 10 8 10C10.2 10 12 7.76 12 5C12 2.24 10.2 0 8 0ZM3.82 10C1.7 10.1 0 11.84 0 14V16H16V14C16 11.84 14.32 10.1 12.18 10C11.1 11.22 9.62 12 8 12C6.38 12 4.9 11.22 3.82 10Z"
               fill="black" />
             </svg>
-            <p class="ml-3 detail-post">{{ $post->user->name }}</p>
+            <p class="ml-3 detail-post">{{ $post->user->email }}</p>
           </div>
           <div class="all-posts-body">{!! $post->shortBody() !!}</div>
           </div>
         </div>
         </a>
       @endforeach
+        <div class="mt-6">
 
           <!-- pagination -->
           <div class="flex justify-between mb-7">
             <!-- Previous Button -->
             @if ($posts->onFirstPage())
-
-      @else
-            <a href="{{ $posts->previousPageUrl() }}"
-              class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-white pagination hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              <!-- <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            @else
+          <a href="{{ $posts->previousPageUrl() }}"
+            class="flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-white pagination hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <!-- <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
           </svg> -->
-              <svg class="pr-2" width="25" height="13" viewBox="0 0 25 13" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M8.86384 2.92404C8.98823 2.8211 9.08802 2.69695 9.15726 2.55898C9.22649 2.42101 9.26375 2.27206 9.26682 2.121C9.26988 1.96995 9.23869 1.81989 9.1751 1.67978C9.11151 1.53967 9.01682 1.41238 8.89669 1.3055C8.77655 1.19862 8.63343 1.11434 8.47586 1.05769C8.3183 1.00103 8.14951 0.973172 7.97957 0.975762C7.80964 0.978352 7.64203 1.01134 7.48675 1.07276C7.33148 1.13418 7.19171 1.22277 7.0758 1.33325L1.58926 6.20582L0.692844 7.00042L1.58687 7.79582L7.06908 12.6732C7.30758 12.8784 7.62717 12.9921 7.95901 12.9898C8.29086 12.9875 8.60841 12.8695 8.84327 12.6611C9.07813 12.4527 9.21151 12.1706 9.21468 11.8757C9.21785 11.5807 9.09056 11.2964 8.86022 11.084L5.53716 8.12757L23.0517 8.13534C23.3874 8.13548 23.7094 8.0171 23.9468 7.80623C24.1842 7.59535 24.3177 7.30927 24.3178 7.0109C24.318 6.71253 24.1848 6.42632 23.9475 6.21524C23.7102 6.00415 23.3884 5.88548 23.0527 5.88534L5.53815 5.87757L8.86384 2.92404Z"
-                fill="white" />
-              </svg>
-              Sebelumnya
-            </a>
+            <svg class="pr-2" width="25" height="13" viewBox="0 0 25 13" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M8.86384 2.92404C8.98823 2.8211 9.08802 2.69695 9.15726 2.55898C9.22649 2.42101 9.26375 2.27206 9.26682 2.121C9.26988 1.96995 9.23869 1.81989 9.1751 1.67978C9.11151 1.53967 9.01682 1.41238 8.89669 1.3055C8.77655 1.19862 8.63343 1.11434 8.47586 1.05769C8.3183 1.00103 8.14951 0.973172 7.97957 0.975762C7.80964 0.978352 7.64203 1.01134 7.48675 1.07276C7.33148 1.13418 7.19171 1.22277 7.0758 1.33325L1.58926 6.20582L0.692844 7.00042L1.58687 7.79582L7.06908 12.6732C7.30758 12.8784 7.62717 12.9921 7.95901 12.9898C8.29086 12.9875 8.60841 12.8695 8.84327 12.6611C9.07813 12.4527 9.21151 12.1706 9.21468 11.8757C9.21785 11.5807 9.09056 11.2964 8.86022 11.084L5.53716 8.12757L23.0517 8.13534C23.3874 8.13548 23.7094 8.0171 23.9468 7.80623C24.1842 7.59535 24.3177 7.30927 24.3178 7.0109C24.318 6.71253 24.1848 6.42632 23.9475 6.21524C23.7102 6.00415 23.3884 5.88548 23.0527 5.88534L5.53815 5.87757L8.86384 2.92404Z"
+              fill="white" />
+            </svg>
+            Sebelumnya
+          </a>
       @endif
 
             <!-- Next Button -->
             @if ($posts->hasMorePages())
+          <div class="flex justify-end flex-1">
             <a href="{{ $posts->nextPageUrl() }}"
-              class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white pagination hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              Selanjutnya
-              <!-- <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white pagination hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Selanjutnya
+            <!-- <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
           </svg> -->
-              <svg class="pl-2" width="25" height="13" viewBox="0 0 25 13" fill="none"
+            <svg class="pl-2" width="25" height="13" viewBox="0 0 25 13" fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M16.1433 10.0798C16.019 10.1828 15.9192 10.307 15.8501 10.445C15.7809 10.583 15.7437 10.732 15.7407 10.8831C15.7377 11.0341 15.769 11.1842 15.8326 11.3242C15.8963 11.4643 15.991 11.5916 16.1112 11.6984C16.2314 11.8052 16.3745 11.8894 16.5321 11.946C16.6897 12.0026 16.8585 12.0304 17.0284 12.0277C17.1984 12.0251 17.366 11.992 17.5212 11.9305C17.6765 11.869 17.8162 11.7804 17.9321 11.6698L23.4164 6.79485L24.3125 5.99985L23.4181 5.20485L17.9338 0.329846C17.6952 0.124816 17.3755 0.0112867 17.0437 0.0137099C16.7118 0.0161331 16.3943 0.134315 16.1596 0.342802C15.9248 0.551289 15.7915 0.833398 15.7885 1.12837C15.7855 1.42334 15.9129 1.70757 16.1433 1.91985L19.4677 4.87485H1.95312C1.61746 4.87485 1.29554 4.99337 1.05819 5.20435C0.820842 5.41533 0.6875 5.70148 0.6875 5.99985C0.6875 6.29821 0.820842 6.58436 1.05819 6.79534C1.29554 7.00632 1.61746 7.12485 1.95312 7.12485H19.4677L16.1433 10.0798Z"
-                fill="white" />
-              </svg>
+              d="M16.1433 10.0798C16.019 10.1828 15.9192 10.307 15.8501 10.445C15.7809 10.583 15.7437 10.732 15.7407 10.8831C15.7377 11.0341 15.769 11.1842 15.8326 11.3242C15.8963 11.4643 15.991 11.5916 16.1112 11.6984C16.2314 11.8052 16.3745 11.8894 16.5321 11.946C16.6897 12.0026 16.8585 12.0304 17.0284 12.0277C17.1984 12.0251 17.366 11.992 17.5212 11.9305C17.6765 11.869 17.8162 11.7804 17.9321 11.6698L23.4164 6.79485L24.3125 5.99985L23.4181 5.20485L17.9338 0.329846C17.6952 0.124816 17.3755 0.0112867 17.0437 0.0137099C16.7118 0.0161331 16.3943 0.134315 16.1596 0.342802C15.9248 0.551289 15.7915 0.833398 15.7885 1.12837C15.7855 1.42334 15.9129 1.70757 16.1433 1.91985L19.4677 4.87485H1.95312C1.61746 4.87485 1.29554 4.99337 1.05819 5.20435C0.820842 5.41533 0.6875 5.70148 0.6875 5.99985C0.6875 6.29821 0.820842 6.58436 1.05819 6.79534C1.29554 7.00632 1.61746 7.12485 1.95312 7.12485H19.4677L16.1433 10.0798Z"
+              fill="white" />
+            </svg>
 
             </a>
+          </div>
       @else
-
       @endif
           </div>
-
         </div>
+      @else
+        <p>Artikel tidak tersedia</p>
+      @endif
       </div>
     </div>
+  </div>
   </div>
 </x-layout>

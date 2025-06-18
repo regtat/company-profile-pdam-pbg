@@ -37,7 +37,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255)
-                    ->notRegex('/^.+$/i')
                     ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'unique' => 'Email sudah terdaftar',
@@ -81,6 +80,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -3,7 +3,7 @@
         <div class="h-[315px] relative">
             <img src="{{ asset('storage/background/bg-baru.jpg') }}" class="object-cover w-full">
             <div class="absolute top-10 left-10 text-white">
-                <p class="font-extrabold leading-none text-left font-poppins profil">Artikel dan Berita</p>
+                <p class="font-extrabold leading-none text-left font-poppins profil">Artikel & Pengumuman</p>
                 <div class="block bg-white w-100 h-1 my-4"></div>
                 <p>Semua</p>
             </div>
@@ -13,20 +13,21 @@
                 <div class="flex flex-col">
                     <div>
                         <ul>
-                            <li class="font-bold text-2xl text-black mb-4">Kategori</li>
+                            <li class="font-bold text-2xl text-black mb-4">KATEGORI</li>
                             @foreach ($category as $cat)
-                                                <a href="{{ route('berita.kategori', $cat->slug) }}">
-                                                    <li class="list-profil flex flex-row items-center mb-2
-                                  {{ request()->is('berita/kategori/' . $cat->slug) ? 'font-semibold text-blue-600' : '' }}">
-                                                        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                d="M7.157 7.71114L1.5 13.3681L0.0859985 11.9541L5.036 7.00414L0.0859985 2.05414L1.5 0.640137L7.157 6.29714C7.34447 6.48466 7.44978 6.73897 7.44978 7.00414C7.44978 7.2693 7.34447 7.52361 7.157 7.71114Z"
-                                                                fill="#6E6A6A" />
-                                                        </svg>
-                                                        <span class="pl-2">{{$cat->name}}</span>
-                                                    </li>
-                                                </a>
+                                <a href="{{ route('berita.kategori', $cat->slug) }}">
+                                    <li
+                                        class="list-profil flex flex-row items-center mb-2
+                                      {{ request()->is('berita/kategori/' . $cat->slug) ? 'font-semibold text-blue-600' : '' }}">
+                                        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M7.157 7.71114L1.5 13.3681L0.0859985 11.9541L5.036 7.00414L0.0859985 2.05414L1.5 0.640137L7.157 6.29714C7.34447 6.48466 7.44978 6.73897 7.44978 7.00414C7.44978 7.2693 7.34447 7.52361 7.157 7.71114Z"
+                                                fill="#6E6A6A" />
+                                        </svg>
+                                        <span class="pl-2">{{$cat->name}}</span>
+                                    </li>
+                                </a>
                             @endforeach
                             <li class="list-profil flex flex-row items-center mb-2">
                                 <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
@@ -41,18 +42,18 @@
                         </ul>
                         <div>
                             <p class="font-poppins mt-10 flex items-start uppercase text-2xl">Artikel Lainnya</p>
+                            <hr class="mt-3 mb-4">
                             @foreach ($artikelLain as $item)
-                                <hr class="my-4">
                                 <a href="/post/{{$item->id}}">
-                                    <div class="flex flex-row gap-x-4 mb-4">
+                                    <div class="flex flex-row gap-x-5 mb-16">
                                         <div class="w-1/2">
-                                            <img class="h-24 w-full object-cover rounded-md"
+                                            <img class="h-32 w-full object-cover rounded-md"
                                                 src="{{asset('storage/' . $item->image)}}" alt="Post image">
                                         </div>
                                         <div class="w-1/2 flex flex-col">
                                             <div class="short-title">{{ $item->shortTitle() }}</div>
                                             <div class="date mt-3">
-                                                {{\Carbon\Carbon::parse($item->published_at)->format('d F Y')}}</div>
+                                                {{Carbon\Carbon::parse($post->published_at)->isoFormat('D MMMM Y')}}</div>
                                         </div>
                                     </div>
                                 </a>
@@ -72,9 +73,10 @@
                                         fill="black" />
                                 </svg>
                                 <p class="ml-3 detail-date">
-                                    {{\Carbon\Carbon::parse($post->published_at)->format('Y-m-d')}}</p>
-                                <p class="ml-3 detail-date">|</p>
-                                <svg class="ml-3" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    {{\Carbon\Carbon::parse($post->published_at)->format('Y-m-d')}}
+                                </p>
+                                <p class="ml-5 detail-date">|</p>
+                                <svg class="ml-5" width="16" height="16" viewBox="0 0 16 16" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M8 0C5.8 0 4 2.24 4 5C4 7.76 5.8 10 8 10C10.2 10 12 7.76 12 5C12 2.24 10.2 0 8 0ZM3.82 10C1.7 10.1 0 11.84 0 14V16H16V14C16 11.84 14.32 10.1 12.18 10C11.1 11.22 9.62 12 8 12C6.38 12 4.9 11.22 3.82 10Z"
@@ -94,5 +96,5 @@
             </div>
         </div>
     </div>
-    
+
 </x-layout>

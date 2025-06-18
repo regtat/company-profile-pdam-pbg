@@ -431,7 +431,11 @@ height: 50%;
 
 background: #FFFFFF;
 border-radius: 10px;
+}
 
+.search-button{
+background: #2082AF !important;
+border-radius: 5px;
 }
 
 .dropdown-color{
@@ -464,4 +468,11 @@ color: #000000;
 .pagination{
   background: #297890;
   border-radius: 5px;
+}
+.card-comment{
+
+background: #FFFFFF;
+box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.25);
+border-radius: 10px;
+
 }

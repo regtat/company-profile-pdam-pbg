@@ -37,7 +37,7 @@ class CommentResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone_number')
                     ->tel()
-                    ->required()
+                    ->nullable()
                     ->maxLength(13)
                     ->minLength(12)
                     ->placeholder('081234567891')
@@ -50,7 +50,7 @@ class CommentResource extends Resource
                 //     ->numeric(),
                 Forms\Components\Select::make('parent_id')
                     ->label('Balasan untuk')
-                    ->relationship('replies', 'comment')
+                    ->relationship('parent', 'comment')
                     ->nullable(),
             ]);
     }
@@ -92,7 +92,8 @@ class CommentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

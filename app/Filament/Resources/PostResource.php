@@ -193,11 +193,11 @@ class PostResource extends Resource
                     // Action::make('Download')
                     //     ->url(fn(Post $record)=>route('post.pdf', $record))
                     //     ->openUrlInNewTab()
-                    Tables\Actions\Action::make('pdf')
-                        ->label('PDF')
-                        ->color('success')
-                        ->url(fn(Post $record) => route('pdf', $record))
-                        ->openUrlInNewTab(),
+                    // Tables\Actions\Action::make('pdf')
+                    //     ->label('PDF')
+                    //     ->color('success')
+                    //     ->url(fn(Post $record) => route('pdf', $record))
+                    //     ->openUrlInNewTab(),
                 ])->tooltip('Actions')
             ])
             ->bulkActions([
@@ -218,19 +218,19 @@ class PostResource extends Resource
                 ]),
             ])
             ->headerActions([
-                BulkAction::make('Export')
-                    ->deselectRecordsAfterCompletion()
-                    ->action(function (Collection $records) {
-                        // $posts=Post::get();
-                        return response()->streamDownload(function () use ($records) {
-                            $pdfContent = Blade::render('postsPDF', [
-                                'records' => $records
-                            ]);
-                            echo Pdf::loadHTML($pdfContent)
-                                ->setPaper('A4', 'potrait')
-                                ->stream();
-                        }, 'post.pdf');
-                    })
+                // BulkAction::make('Export')
+                //     ->deselectRecordsAfterCompletion()
+                //     ->action(function (Collection $records) {
+                //         // $posts=Post::get();
+                //         return response()->streamDownload(function () use ($records) {
+                //             $pdfContent = Blade::render('postsPDF', [
+                //                 'records' => $records
+                //             ]);
+                //             echo Pdf::loadHTML($pdfContent)
+                //                 ->setPaper('A4', 'potrait')
+                //                 ->stream();
+                //         }, 'post.pdf');
+                //     })
             ]);
         // Ambil data yang sudah difilter
         // $filteredData = Post::query()
