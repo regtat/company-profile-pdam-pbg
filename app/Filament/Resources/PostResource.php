@@ -92,8 +92,7 @@ class PostResource extends Resource
                     ->required()
                     ->directory('posts'),
                 Forms\Components\Toggle::make('active')
-                    ->default(false)
-                // ->visible(fn () => Auth::user()->roles==='Admin' )
+                ->visible(fn () => Auth::user()->roles==='Admin' )
                 ,
                 Forms\Components\Toggle::make('comments_enabled')
                     ->default(true),
@@ -129,9 +128,23 @@ class PostResource extends Resource
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\IconColumn::make('active')
-                    ->boolean(),
+                    ->label('Active')
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name=$column->getName();
+                        $record->update([
+                            $name=>!$record->$name
+                        ]);
+                    }),
                 Tables\Columns\IconColumn::make('comments_enabled')
-                    ->boolean(),
+                    ->label('Comments Enabled')
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name=$column->getName();
+                        $record->update([
+                            $name=>!$record->$name
+                        ]);
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

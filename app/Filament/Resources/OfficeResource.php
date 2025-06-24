@@ -52,6 +52,8 @@ class OfficeResource extends Resource
                 Tables\Columns\TextColumn::make('service_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('branch_office_id')
+                    ->label('Branch Office')
+                    ->relationship('branch_office_id', 'name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

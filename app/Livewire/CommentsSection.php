@@ -94,26 +94,49 @@ class CommentsSection extends Component
 
     public function toggleReplyForm($commentId)
     {
-        $this->replyTo = $this->replyTo === $commentId ? null : $commentId;
+        if ($this->replyTo === $commentId){
+            $this->replyTo = null;
+        }else {
+            $this->replyTo = $commentId;
+        }
+
     }
 
     public function addReply()
     {
-        $this->validateOnly('replyText');
+        $rules = ['replyText' => 'required|max:500'];
 
-        Comment::create([
-            'post_id' => $this->post->id,
-            'user_id' => Auth::id(),
-            'name' => Auth::user()->name,
-            'email' => Auth::user()->email,
-            'phone_number' => null,
-            'comment' => $this->replyText,
-            'parent_id' => $this->replyTo,
-        ]);
+    if (!Auth::check()) {
+        $rules['name'] = 'required';
+        $rules['email'] = 'required|email';
+        $rules['phoneNumber'] = 'required|regex:/^[0-9]{12,13}$/';
+    }
 
-        $this->replyText = '';
-        $this->replyTo = null;
-        session()->flash('success', 'Balasan berhasil dikirim. Menunggu persetujuan admin');
+    $this->validate($rules);
+
+    $replyData = [
+        'post_id' => $this->post->id,
+        'comment' => $this->replyText,
+        'parent_id' => $this->replyTo,
+        'approved' => false,
+    ];
+
+    if (Auth::check()) {
+        $replyData['name'] = Auth::user()->name;
+        $replyData['email'] = Auth::user()->email;
+        $replyData['phone_number'] = null;
+        $replyData['user_id'] = Auth::id();
+    } else {
+        $replyData['name'] = $this->name;
+        $replyData['email'] = $this->email;
+        $replyData['phone_number'] = $this->phoneNumber;
+    }
+
+    Comment::create($replyData);
+
+    session()->flash('success', 'Balasan berhasil dikirim. Menunggu verifikasi admin');
+
+    $this->reset(['replyText', 'replyTo', 'name', 'email', 'phoneNumber']);
     }
 
     public function confirmCommentDeletion($commentId)

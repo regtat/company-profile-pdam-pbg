@@ -69,7 +69,14 @@ class CommentResource extends Resource
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('approved')
-                    ->boolean(),
+                    ->label('Approved')
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name=$column->getName();
+                        $record->update([
+                            $name=>!$record->$name
+                        ]);
+                    }),
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('parent_id')
@@ -114,7 +121,6 @@ class CommentResource extends Resource
         return [
             'index' => Pages\ListComments::route('/'),
             'create' => Pages\CreateComment::route('/create'),
-            'edit' => Pages\EditComment::route('/{record}/edit'),
         ];
     }
 }
